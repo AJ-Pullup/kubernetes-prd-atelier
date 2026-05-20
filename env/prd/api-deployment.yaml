@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gitops-api
+  namespace: prd-env
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gitops-api
+  template:
+    metadata:
+      labels:
+        app: gitops-api
+    spec:
+      initContainers:
+      - name: fetch-secrets
+        image: alpine/git
+        command:
+        - "/bin/sh"
+        - "-c"
+        - |
+          echo "export DB_USER=api_prod_user" > /shared-secrets/secrets.env
+          echo "export DB_PASSWORD=api_secure_password" >> /shared-secrets/secrets.env
+        volumeMounts:
+        - name: secrets-volume
+          mountPath: /shared-secrets
+      containers:
+      - name: app
+        image: docker.io/pullup42/gitops:api
+        ports:
+        - containerPort: 3000
+        command: ["/bin/sh", "-c"]
+        args: ["source /app/secrets/secrets.env && node server.js"]
+        volumeMounts:
+        - name: secrets-volume
+          mountPath: /app/secrets
+      volumes:
+      - name: secrets-volume
+        emptyDir: {}
