@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: 'https://github.com/AJ-Pullup/kubernetes-prd-atelier.git'
     targetRevision: HEAD
-    path: overlays/dev
+    path: env/dev-env
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: dev-env
@@ -16,6 +16,8 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -27,7 +29,7 @@ spec:
   source:
     repoURL: 'https://github.com/AJ-Pullup/kubernetes-prd-atelier.git'
     targetRevision: HEAD
-    path: overlays/prod
+    path: env/prd
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: prd-env
