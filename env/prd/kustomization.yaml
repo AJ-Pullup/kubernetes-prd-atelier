@@ -1,0 +1,17 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+bases:
+- ../../base
+namespace: prod
+
+configMapGenerator:
+- name: app-config
+  behavior: replace
+  literals:
+  - config.json={"message":"Production environment"}
+
+resources:
+- gateway.yaml
+
+patches:
+- path: patches.yaml

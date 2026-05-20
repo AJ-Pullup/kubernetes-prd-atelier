@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gitops
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gitops
+  template:
+    metadata:
+      labels:
+        app: gitops
+    spec:
+      initContainers:
+      - name: fetch-secrets
+        image: alpine/git
+        command:
+        - "/bin/sh"
+        - "-c"
+        - |
+          echo "export DB_USER=admin_db" > /shared-secrets/secrets.env
+          echo "export DB_PASSWORD=super_secret_pass" >> /shared-secrets/secrets.env
+        volumeMounts:
+        - name: secrets-volume
+          mountPath: /shared-secrets
+      containers:
+      - name: app
+        image: docker.io/pullup42/gitops:v1
+        ports:
+        - containerPort: 3000
+        command: ["/bin/sh", "-c"]
+        args: ["source /app/secrets/secrets.env && node server.js"]
+        volumeMounts:
+        - name: config-volume
+          mountPath: /app/config
+        - name: secrets-volume
+          mountPath: /app/secrets
+      volumes:
+      - name: config-volume
+        configMap:
+          name: app-config
+      - name: secrets-volume
+        emptyDir: {}
