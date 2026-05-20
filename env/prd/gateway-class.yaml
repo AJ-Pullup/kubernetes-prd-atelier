@@ -3,4 +3,4 @@ kind: GatewayClass
 metadata:
   name: traefik
 spec:
-  controllerName: traefik.io/gateway-controller
+  controllerName: k3s.cattle.io/traefik
