@@ -11,6 +11,7 @@ configMapGenerator:
   - config.json={"message":"Production environment"}
 
 resources:
+- gateway-class.yaml
 - gateway.yaml
 - api-deployment.yaml
 - api-service.yaml
