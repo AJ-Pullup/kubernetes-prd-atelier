@@ -11,6 +11,7 @@ configMapGenerator:
   - config.json={"message":"Production environment"}
 
 resources:
+- traefik-config.yaml
 - gateway-class.yaml
 - gateway.yaml
 - api-deployment.yaml
