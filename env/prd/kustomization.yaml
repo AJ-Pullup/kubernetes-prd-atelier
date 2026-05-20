@@ -12,6 +12,8 @@ configMapGenerator:
 
 resources:
 - gateway.yaml
+- api-deployment.yaml
+- api-service.yaml
 
 patches:
 - path: patches.yaml
