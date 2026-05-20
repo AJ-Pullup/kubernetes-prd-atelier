@@ -12,7 +12,6 @@ configMapGenerator:
 
 resources:
 - traefik-config.yaml
-- gateway-class.yaml
 - ingress.yaml
 - api-deployment.yaml
 - api-service.yaml
