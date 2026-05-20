@@ -22,7 +22,7 @@ spec:
   parentRefs:
   - name: prod-gateway
   hostnames:
-  - "pullupToGitops.local"
+  - "gitops.local"
   rules:
   - matches:
     - path:
