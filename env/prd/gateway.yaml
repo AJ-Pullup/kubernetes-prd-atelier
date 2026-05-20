@@ -2,7 +2,7 @@ apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
   name: prod-gateway
-  namespace: prod
+  namespace: prd-env
 spec:
   gatewayClassName: traefik
   listeners:
@@ -17,20 +17,13 @@ apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
   name: app-routing
-  namespace: prod
+  namespace: prd-env
 spec:
   parentRefs:
   - name: prod-gateway
   hostnames:
   - "gitops.local"
   rules:
-  - matches:
-    - path:
-        type: PathPrefix
-        value: /api
-    backendRefs:
-    - name: gitops-api
-      port: 3000
   - matches:
     - path:
         type: PathPrefix
